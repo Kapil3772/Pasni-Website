@@ -1,27 +1,48 @@
+:root{
+    /* bg-colors */
+    --bg-dark-- : #A4161A;
+    --bg-light-- : #FDEAC4;
+    /*text-colors*/
+    --nav-color-- : #F4C430;
+    --main-heading-color-- : #333333;
+    /* text-sizes */
+    --main-heading-size--: 55px;
+    --heading-size--: 50px;
+    --sub-heading-size--: 20px;
+    --btn-text-size--: 14px;
+    --text-size--: 14px;
+    /* button-colors */
+    --btn2-bgcolor--: #FDF0C8;
+    --btn2-text-color--: #AE8D27;
+}
+
 * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #FDF5E6;
+            background-color: var(--bg-light--);
+            font-family: "outfit", sans-serif;
+            font-size: var(--text-size--);
         }
 
         /* Header */
         .header {
-            background-color: #B22222;
-            height: 60px;
+            background-color: var(--bg-dark--);
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 60px;
+            padding: 0 80px;
         }
 
         .header-left {
-            color: white;
+            color: var(--nav-color--);
             font-weight: bold;
+            font-size: 16px;
         }
 
         .header-nav {
@@ -30,21 +51,21 @@
         }
 
         .header-nav a {
-            color: white;
+            color: var(--nav-color--);
             text-decoration: none;
             font-size: 14px;
         }
 
         /* Main Content */
         .main-container {
-            padding: 60px 60px;
+            padding: 100px 80px;
         }
 
         /* Hero Section */
         .hero-section {
             display: flex;
             gap: 60px;
-            margin-bottom: 80px;
+            margin-bottom: 50px;
         }
 
         .hero-left {
@@ -52,9 +73,10 @@
         }
 
         .hero-title {
-            font-size: 48px;
+            font-family: "Merriweather", serif;
+            font-size: var(--main-heading-size--);
             font-weight: bold;
-            color: #8B4513;
+            color: var(--main-heading-color--);
             line-height: 1.1;
             margin-bottom: 20px;
         }
@@ -65,20 +87,22 @@
             margin-bottom: 8px;
         }
 
-        .hero-description {
+        .description {
             font-size: 14px;
-            color: #666;
+            color: #000;
             margin-bottom: 30px;
             line-height: 1.4;
         }
 
-        .hero-button {
-            background-color: #B22222;
-            color: white;
+        .button {
+            width: 250px;
+            font-family: "outfit", sans-serif;
+            background-color: var(--bg-dark--);
+            color: var(--nav-color--);
             border: none;
             padding: 12px 24px;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: var(--btn-text-size--);
             cursor: pointer;
         }
 
@@ -90,7 +114,6 @@
         .hero-image {
             width: 650px;
             height: 550px;
-            background: linear-gradient(135deg, #8B4513 0%, #B22222 100%);
             border-radius: 15px;
             position: relative;
             overflow: hidden;
@@ -130,14 +153,18 @@
             flex: 1;
         }
 
-        .second-image {
-            width: 70%;
-            height: 350px;
-            background: linear-gradient(135deg, #B22222 0%, #8B4513 100%);
-            border-radius: 15px;
-            position: relative;
-            overflow: hidden;
-        }
+.second-image {
+    width: 492px;
+    height: 500px;
+    overflow: hidden;
+    background-color: #f0f0f0;
+    border-radius: 50px;
+}
+
+.second-image img {
+      height: inherit;
+}
+
 
         .second-image::before {
             content: '';
@@ -165,9 +192,10 @@
         }
 
         .second-title {
-            font-size: 36px;
+            font-family: "Merriweather", serif;
+            font-size: var(--heading-size--);
             font-weight: bold;
-            color: #8B4513;
+            color: var(--main-heading-color--);
             line-height: 1.2;
             margin-bottom: 20px;
         }
@@ -179,16 +207,6 @@
             margin-bottom: 30px;
         }
 
-        .second-button {
-            background-color: #B22222;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 20px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
         /* Products Section */
         .products-section {
             text-align: center;
@@ -197,14 +215,14 @@
         }
 
         .products-title {
-            font-size: 24px;
-            color: #8B4513;
+            font-family: 'Merriweather', serif;
+            font-size: var(--sub-heading-size--);
+            color: var(--main-heading-color--);
             margin-bottom: 40px;
         }
 
         .products-container {
             position: relative;
-            overflow: hidden;
             margin-bottom: 40px;
         }
 
@@ -232,7 +250,7 @@
         }
 
         .product-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5 px);
         }
 
         .product-card-title {
@@ -294,14 +312,22 @@
         .dot.active {
             background-color: #B22222;
         }
+        .product-btns {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
 
-        .products-button {
-            background-color: #B22222;
-            color: white;
-            border: none;
+        .button2 {
+            width: 250px;
+            font-family: "outfit", serif;
+            background-color: var(--btn2-bgcolor--);
+            color: var(--btn2-text-color--);
+            border: 1px solid var(--btn2-text-color--);
             padding: 12px 24px;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: var(--btn-text-size--);
+            font-weight: bold;
             cursor: pointer;
         }
 
