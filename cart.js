@@ -1,7 +1,19 @@
 // Cart Management System
 class CartManager {
     constructor() {
-        this.products = [
+        this.products = this.loadProducts();
+        this.initializeCartSidebar();
+    }
+
+    loadProducts() {
+        // Try to load products from admin management first
+        const adminProducts = JSON.parse(localStorage.getItem('pasni_products'));
+        if (adminProducts && adminProducts.length > 0) {
+            return adminProducts;
+        }
+
+        // Fall back to default products if none exist
+        const defaultProducts = [
             {
                 id: 1,
                 name: "Traditional Pasni Set",
@@ -38,7 +50,41 @@ class CartManager {
                 image: "assets/five.jpg"
             }
         ];
-        this.initializeCartSidebar();
+
+        // Save default products for admin management
+        localStorage.setItem('pasni_products', JSON.stringify(defaultProducts));
+        return defaultProducts;
+    }
+
+    // Method to refresh products (called when admin updates products)
+    refreshProducts() {
+        this.products = this.loadProducts();
+        // Update any existing cart items with new product info
+        this.updateCartAfterProductChanges();
+        // Refresh homepage slider if it exists
+        if (typeof productSlider !== 'undefined' && productSlider && productSlider.refresh) {
+            productSlider.refresh();
+        }
+    }
+
+    updateCartAfterProductChanges() {
+        const currentUser = this.getCurrentUser();
+        if (currentUser && currentUser.cart) {
+            currentUser.cart.forEach(cartItem => {
+                const updatedProduct = this.products.find(p => p.id == cartItem.id);
+                if (updatedProduct) {
+                    cartItem.name = updatedProduct.name;
+                    cartItem.price = updatedProduct.price;
+                    cartItem.image = updatedProduct.image;
+                    cartItem.description = updatedProduct.description;
+                }
+            });
+            this.updateUserData(currentUser);
+            this.updateCartSidebar();
+        }
+    }
+
+    initializeCartSidebar() {
     }
 
     initializeCartSidebar() {
@@ -328,8 +374,32 @@ class CartManager {
     }
 }
 
-// Initialize cart manager
+// Create global cartManager instance
 const cartManager = new CartManager();
+
+// Listen for admin product updates
+window.addEventListener('storage', function(e) {
+    if (e.key === 'pasni_products') {
+        cartManager.refreshProducts();
+    }
+});
+
+// Check for product updates on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const lastUpdate = localStorage.getItem('pasni_products_updated');
+    if (lastUpdate) {
+        cartManager.refreshProducts();
+    }
+});
+
+// Global functions for backward compatibility
+function addToCart(productId) {
+    cartManager.addToCart(productId);
+}
+
+function addToCeremony(productId) {
+    cartManager.addToCeremony(productId);
+}
 
 // Make it globally available
 window.cartManager = cartManager;

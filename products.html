@@ -98,42 +98,8 @@
   </header>
 
   <!-- Products Page -->
-  <main class="products-page">
-    <div class="product-row">
-      <div class="product-image">
-        <img src="assets/one.png" alt="Ceremonial Set" />
-      </div>
-      <div class="product-details">
-        <div class="product-title">Traditional Pasni Set</div>
-        <div class="product-desc">Includes silver utensils, ritual cloths, and ceremonial props. Carefully curated to match the Pasni tradition with elegance.</div>
-        <div class="product-price">Rs. 2,500/day</div>
-        <button class="button" onclick="cartManager.addToCart(1)">RENT NOW</button>
-      </div>
-    </div>
-
-    <div class="product-row">
-      <div class="product-image">
-        <img src="assets/two.png" alt="Royal Outfit" />
-      </div>
-      <div class="product-details">
-        <div class="product-title">Premium Ceremony Package</div>
-        <div class="product-desc">Luxurious baby outfit inspired by Nepali royal heritage. Available in multiple sizes and includes accessories.</div>
-        <div class="product-price">Rs. 4,000/day</div>
-        <button class="button" onclick="cartManager.addToCart(2)">RENT NOW</button>
-      </div>
-    </div>
-
-    <div class="product-row">
-      <div class="product-image">
-        <img src="assets/three.png" alt="Complete Event Setup" />
-      </div>
-      <div class="product-details">
-        <div class="product-title">Complete Event Setup</div>
-        <div class="product-desc">Full-service package including all ceremonial items, traditional decorations, seating arrangements, and professional event coordination.</div>
-        <div class="product-price">Rs. 6,500/day</div>
-        <button class="button" onclick="cartManager.addToCart(3)">RENT NOW</button>
-      </div>
-    </div>
+  <main class="products-page" id="productsContainer">
+    <!-- Products will be loaded dynamically -->
   </main>
 
   <!-- Footer -->
@@ -145,10 +111,10 @@
     </div>
     <div class="footer-section">
       <h3>QUICK LINKS</h3>
-      <p>About Us</p>
-      <p>Services</p>
-      <p>Portfolio</p>
-      <p>Contact</p>
+      <a href="about.html" class="footer-link">About Us</a>
+      <a href="products.html" class="footer-link">Services</a>
+      <a href="products.html" class="footer-link">Portfolio</a>
+      <a href="contact.html" class="footer-link">Contact</a>
     </div>
     
     <div class="footer-section">
@@ -160,5 +126,43 @@
   </footer>
 
   <script src="cart.js"></script>
+  <script>
+    // Load products dynamically
+    document.addEventListener('DOMContentLoaded', function() {
+      loadProductsPage();
+    });
+
+    function loadProductsPage() {
+      const products = cartManager.products;
+      const container = document.getElementById('productsContainer');
+      
+      if (products.length === 0) {
+        container.innerHTML = '<p style="text-align: center; padding: 40px; font-size: 18px;">No products available at the moment.</p>';
+        return;
+      }
+
+      container.innerHTML = products.map(product => `
+        <div class="product-row">
+          <div class="product-image">
+            <img src="${product.image}" alt="${product.name}" onerror="this.src='assets/placeholder.png'" />
+          </div>
+          <div class="product-details">
+            <div class="product-title">${product.name}</div>
+            <div class="product-desc">${product.description}</div>
+            <div class="product-price">Rs. ${product.price}/day</div>
+            <button class="button" onclick="cartManager.addToCart(${product.id})">RENT NOW</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Listen for product updates from admin
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'pasni_products') {
+        cartManager.refreshProducts();
+        loadProductsPage();
+      }
+    });
+  </script>
 </body>
 </html>

@@ -30,7 +30,7 @@
                 <h1 class="hero-title">Making Your<br>Event<br>Unforgettable</h1>
                 <p class="hero-subtitle">Crafting Memories That Last a Lifetime</p>
                 <p class="description">Transform your special occasions into extraordinary experiences with our comprehensive event planning services. From intimate gatherings to grand celebrations, we bring your vision to life with unmatched attention to detail.</p>
-                <button class="button">GET STARTED</button>
+                <button class="button" onclick="window.location.href='products.html'">GET STARTED</button>
             </div>
             <div class="hero-right">
                 <div class="hero-image"><img src="assets/hero-img.png" alt=""></div>
@@ -45,7 +45,7 @@
             <div class="second-right">
                 <h2 class="second-title">Where Tradition<br>Meets Royalty</h2>
                 <p class="description">Experience the perfect blend of cultural heritage and modern elegance. Our traditional ceremonies are designed to honor your roots while creating unforgettable moments for you and your loved ones. Every detail is carefully curated to reflect the richness of our traditions.</p>
-                <button class="button">LEARN MORE</button>
+                <button class="button" onclick="window.location.href='about.html'">LEARN MORE</button>
             </div>
         </section>
 
@@ -55,39 +55,24 @@
 
   <div class="products-container">
     <!-- Slider Controls -->
-    <button class="slider-btn prev" onclick="prevSlide()">‹</button>
-    <button class="slider-btn next" onclick="nextSlide()">›</button>
+    <button class="slider-btn prev">‹</button>
+    <button class="slider-btn next">›</button>
 
     <!-- Slider Track -->
     <div class="slider-wrapper">
-      <div class="products-slider" id="productsSlider">
-        <div class="product-card">
-          <div class="product-card-title"><img src="assets/one.png" alt="" height="360" ></div>
-        </div>
-        <div class="product-card">
-          <div class="product-card-title"><img src="assets/two.png" alt="" height="360"></div>
-        </div>
-        <div class="product-card">
-          <div class="product-card-title"><img src="assets/three.png" alt="" height="360"></div>
-        </div>
-        <div class="product-card">
-          <div class="product-card-title"><img src="assets/four.jpg" alt="" height="360"></div>
-        </div>
-        <div class="product-card">
-          <div class="product-card-title"><img src="assets/five.jpg" alt="" height="590" width="330"></div>
-        </div>
+      <div class="products-slider" id="dynamicProductsSlider">
+        <!-- Products will be loaded dynamically -->
       </div>
     </div>
 
-    <!-- Dots (optional for manual control) -->
-    <div class="slider-dots">
-      <span class="dot active" onclick="currentSlide(0)"></span>
-      <span class="dot" onclick="currentSlide(1)"></span>
+    <!-- Dots for navigation -->
+    <div class="slider-dots" id="dynamicSliderDots">
+      <!-- Dots will be generated dynamically -->
     </div>
   </div>
 
   <div class="product-btns">
-    <button class="button2" onclick="cartManager.addToCeremony(1)">ADD TO CEREMONY</button>
+    <button class="button2" onclick="cartManager.addToCeremony(cartManager.products[0]?.id || 1)">ADD TO CEREMONY</button>
     <button class="button" onclick="window.location.href='products.html'">VIEW MORE</button>
   </div>
 </section>
@@ -103,10 +88,10 @@
         </div>
         <div class="footer-section">
             <h3>QUICK LINKS</h3>
-            <p>About Us</p>
-            <p>Services</p>
-            <p>Portfolio</p>
-            <p>Contact</p>
+            <a href="about.html" class="footer-link">About Us</a>
+            <a href="products.html" class="footer-link">Services</a>
+            <a href="products.html" class="footer-link">Portfolio</a>
+            <a href="contact.html" class="footer-link">Contact</a>
         </div>
         
         <div class="footer-section">
@@ -118,5 +103,6 @@
     </footer>
 
     <script src="cart.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
