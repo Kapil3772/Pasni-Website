@@ -208,110 +208,115 @@
         }
 
         /* Products Section */
-        .products-section {
-            text-align: center;
-            margin-bottom: 60px;
-            position: relative;
-        }
+.products-section {
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+}
 
-        .products-title {
-            font-family: 'Merriweather', serif;
-            font-size: var(--sub-heading-size--);
-            color: var(--main-heading-color--);
-            margin-bottom: 40px;
-        }
+.products-title {
+  font-family: 'Merriweather', serif;
+  font-size: var(--sub-heading-size--);
+  color: var(--main-heading-color--);
+  margin-bottom: 40px;
+}
 
-        .products-container {
-            position: relative;
-            margin-bottom: 40px;
-        }
+.products-container {
+  position: relative;
+  margin-bottom: 40px;
+}
 
-        .products-slider {
-            display: flex;
-            transition: transform 0.5s ease;
-            gap: 30px;
-        }
+/* NEW WRAPPER for overflow control */
+.slider-wrapper {
+  width: 990px; /* 330px * 3 cards */
+  overflow: hidden;
+  margin: 0 auto;
+}
 
-        .product-card {
-            background-color: #F5E6D3;
-            min-width: 300px;
-            height: 150px;
-            border-radius: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #8B4513;
-            font-size: 18px;
-            font-weight: bold;
-            position: relative;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
+/* The track */
+.products-slider {
+  display: flex;
+  gap: 30px;
+  transition: transform 0.5s ease;
+}
 
-        .product-card:hover {
-            transform: translateY(-5 px);
-        }
+/* Product card */
+.product-card {
+    /* background-color: black; */
+  background-color: #FDF0C8;
+  width: 365px;
+  height: 355px;
+  border-radius: 30px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
 
-        .product-card-title {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
+.product-card:hover {
+  transform: translateY(-5px);
+}
 
-        .product-card-desc {
-            font-size: 12px;
-            font-weight: normal;
-            padding: 0 20px;
-            text-align: center;
-        }
+.product-card-desc {
+  font-size: 12px;
+  font-weight: normal;
+  padding: 0 20px;
+  text-align: center;
+}
 
-        .slider-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: #B22222;
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 18px;
-            z-index: 10;
-            transition: background-color 0.3s ease;
-        }
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #B22222;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  z-index: 10;
+  transition: background-color 0.3s ease;
+}
 
-        .slider-btn:hover {
-            background-color: #8B0000;
-        }
+.slider-btn:hover {
+  background-color: #8B0000;
+}
 
-        .slider-btn.prev {
-            left: 10px;
-        }
+.slider-btn.prev {
+  left: 10px;
+}
 
-        .slider-btn.next {
-            right: 10px;
-        }
+.slider-btn.next {
+  right: 10px;
+}
 
-        .slider-dots {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
+.slider-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
 
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #ccc;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ccc;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
-        .dot.active {
-            background-color: #B22222;
-        }
+.dot.active {
+  background-color: #B22222;
+}
+
         .product-btns {
             display: flex;
             justify-content: center;

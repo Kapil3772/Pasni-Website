@@ -49,48 +49,49 @@
             </div>
         </section>
 
-        <!-- Products Section -->
-        <section class="products-section">
-            <h2 class="products-title">Our Products</h2>
-            <div class="products-container">
-                <button class="slider-btn prev" onclick="prevSlide()">‹</button>
-                <button class="slider-btn next" onclick="nextSlide()">›</button>
-                <div class="products-slider" id="productsSlider">
-                    <div class="product-card">
-                        <div class="product-card-title"><img src="assets/one.png" alt="" height="100"></div>
-                        <div class="product-card-desc"></div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-card-title"><img src="assets/two.png" alt="" height="100"></div>
-                        <div class="product-card-desc"></div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-card-title"><img src="assets/three.png" alt="" height="100"></div>
-                        <div class="product-card-desc"></div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-card-title"><img src="assets/four.png" alt="" height="100"></div>
-                        <div class="product-card-desc"></div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-card-title"><img src="assets/fivve.png" alt="" height="100"></div>
-                        <div class="product-card-desc"></div>
-                    </div>
-                  
-                </div>
-                <div class="slider-dots">
-                    <span class="dot active" onclick="currentSlide(1)"></span>
-                    <span class="dot" onclick="currentSlide(2)"></span>
-                    <span class="dot" onclick="currentSlide(3)"></span>
-                    <span class="dot" onclick="currentSlide(4)"></span>
-                </div>
-            </div>
-            <div class="product-btns">
-                <button class="button2">ADD TO CEREMONY</button>
-                <button class="button">VIEW MORE</button>
-            </div>
-            
-        </section>
+       <!-- Products Section -->
+<section class="products-section">
+  <h2 class="products-title">Our Products</h2>
+
+  <div class="products-container">
+    <!-- Slider Controls -->
+    <button class="slider-btn prev" onclick="prevSlide()">‹</button>
+    <button class="slider-btn next" onclick="nextSlide()">›</button>
+
+    <!-- Slider Track -->
+    <div class="slider-wrapper">
+      <div class="products-slider" id="productsSlider">
+        <div class="product-card">
+          <div class="product-card-title"><img src="assets/one.png" alt="" height="360" ></div>
+        </div>
+        <div class="product-card">
+          <div class="product-card-title"><img src="assets/two.png" alt="" height="360"></div>
+        </div>
+        <div class="product-card">
+          <div class="product-card-title"><img src="assets/three.png" alt="" height="360"></div>
+        </div>
+        <div class="product-card">
+          <div class="product-card-title"><img src="assets/four.jpg" alt="" height="360"></div>
+        </div>
+        <div class="product-card">
+          <div class="product-card-title"><img src="assets/five.jpg" alt="" height="590" width="330"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dots (optional for manual control) -->
+    <div class="slider-dots">
+      <span class="dot active" onclick="currentSlide(0)"></span>
+      <span class="dot" onclick="currentSlide(1)"></span>
+    </div>
+  </div>
+
+  <div class="product-btns">
+    <button class="button2">ADD TO CEREMONY</button>
+    <button class="button">VIEW MORE</button>
+  </div>
+</section>
+
     </main>
 
     <!-- Footer -->
