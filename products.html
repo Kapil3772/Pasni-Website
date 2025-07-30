@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pasni Products</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet" />
+  <style>
+    .products-page {
+      padding: 100px 80px;
+      background-color: var(--bg-light--);
+      font-family: "Outfit", sans-serif;
+    }
+
+    .product-row {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 60px;
+      align-items: center;
+    }
+
+    .product-image {
+      width: 320px;
+      height: 320px;
+      background-color: #fdf0c8;
+      border-radius: 30px;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-details {
+      flex: 1;
+    }
+
+    .product-title {
+      font-family: "Merriweather", serif;
+      font-size: 28px;
+      color: var(--main-heading-color--);
+      margin-bottom: 10px;
+    }
+
+    .product-desc {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .product-price {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--bg-dark--);
+      margin-bottom: 20px;
+    }
+
+    .button {
+      background-color: var(--bg-dark--);
+      color: var(--nav-color--);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-size: var(--btn-text-size--);
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .product-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .product-image {
+        width: 100%;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">PASNI RENTAL</div>
+    <nav class="header-nav">
+      <a href="index.html">home</a>
+      <a href="about.html">about us</a>
+      <a href="products.html">products</a>
+      <a href="contact.html">contact</a>
+    </nav>
+  </header>
+
+  <!-- Products Page -->
+  <main class="products-page">
+    <div class="product-row">
+      <div class="product-image">
+        <img src="assets/one.png" alt="Ceremonial Set" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Traditional Pasni Set</div>
+        <div class="product-desc">Includes silver utensils, ritual cloths, and ceremonial props. Carefully curated to match the Pasni tradition with elegance.</div>
+        <div class="product-price">Rs. 2,500/day</div>
+        <button class="button" onclick="cartManager.addToCart(1)">RENT NOW</button>
+      </div>
+    </div>
+
+    <div class="product-row">
+      <div class="product-image">
+        <img src="assets/two.png" alt="Royal Outfit" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Premium Ceremony Package</div>
+        <div class="product-desc">Luxurious baby outfit inspired by Nepali royal heritage. Available in multiple sizes and includes accessories.</div>
+        <div class="product-price">Rs. 4,000/day</div>
+        <button class="button" onclick="cartManager.addToCart(2)">RENT NOW</button>
+      </div>
+    </div>
+
+    <div class="product-row">
+      <div class="product-image">
+        <img src="assets/three.png" alt="Complete Event Setup" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Complete Event Setup</div>
+        <div class="product-desc">Full-service package including all ceremonial items, traditional decorations, seating arrangements, and professional event coordination.</div>
+        <div class="product-price">Rs. 6,500/day</div>
+        <button class="button" onclick="cartManager.addToCart(3)">RENT NOW</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-section">
+      <h3>PASNI NEPAL</h3>
+      <p>Creating unforgettable moments</p>
+      <p>through traditional excellence</p>
+    </div>
+    <div class="footer-section">
+      <h3>QUICK LINKS</h3>
+      <p>About Us</p>
+      <p>Services</p>
+      <p>Portfolio</p>
+      <p>Contact</p>
+    </div>
+    
+    <div class="footer-section">
+      <h3>CONTACT INFO</h3>
+      <p>+977-1-XXXXXXX</p>
+      <p>info@pasni.com.np</p>
+      <p>Kathmandu, Nepal</p>
+    </div>
+  </footer>
+
+  <script src="cart.js"></script>
+</body>
+</html>

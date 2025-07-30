@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Pasni Rental</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap" rel="stylesheet">
+    <style>
+        .about-page {
+            padding: 100px 80px;
+            background-color: var(--bg-light--);
+            font-family: "Outfit", sans-serif;
+        }
+
+        .about-hero {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .about-title {
+            font-family: "Merriweather", serif;
+            font-size: var(--main-heading-size--);
+            color: var(--main-heading-color--);
+            margin-bottom: 20px;
+        }
+
+        .about-subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .story-section {
+            display: flex;
+            gap: 60px;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .story-image {
+            width: 450px;
+            height: 400px;
+            background-color: #fdf0c8;
+            border-radius: 30px;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .story-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .story-content {
+            flex: 1;
+        }
+
+        .story-title {
+            font-family: "Merriweather", serif;
+            font-size: var(--heading-size--);
+            color: var(--main-heading-color--);
+            margin-bottom: 20px;
+        }
+
+        .story-text {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .values-section {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .values-title {
+            font-family: "Merriweather", serif;
+            font-size: var(--heading-size--);
+            color: var(--main-heading-color--);
+            margin-bottom: 40px;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .value-card {
+            background-color: #FDF0C8;
+            padding: 40px 30px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .value-title {
+            font-family: "Merriweather", serif;
+            font-size: 20px;
+            color: var(--main-heading-color--);
+            margin-bottom: 15px;
+        }
+
+        .value-text {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .story-section {
+                flex-direction: column;
+            }
+
+            .story-image {
+                width: 100%;
+                height: 300px;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">PASNI RENTAL</div>
+        <nav class="header-nav">
+            <a href="index.html">home</a>
+            <a href="about.html">about us</a>
+            <a href="products.html">products</a>
+            <a href="contact.html">contact</a>
+        </nav>
+    </header>
+
+    <!-- About Page -->
+    <main class="about-page">
+        <!-- Hero Section -->
+        <section class="about-hero">
+            <h1 class="about-title">About Pasni Rental</h1>
+            <p class="about-subtitle">Preserving Traditions, Creating Memories</p>
+        </section>
+
+        <!-- Our Story Section -->
+        <section class="story-section">
+            <div class="story-image">
+                <img src="assets/project.jpg" alt="Our Story" />
+            </div>
+            <div class="story-content">
+                <h2 class="story-title">Our Story</h2>
+                <p class="story-text">
+                    Pasni Rental was born from a deep respect for Nepali traditions and a desire to make these sacred ceremonies accessible to every family. Founded with the vision of preserving our cultural heritage, we have been serving families across Nepal for years, helping them celebrate the important milestone of their child's first rice feeding ceremony.
+                </p>
+                <p class="story-text">
+                    Our journey began when we realized that many families struggled to gather all the traditional items needed for a proper Pasni ceremony. We decided to bridge this gap by offering comprehensive rental packages that include everything from ceremonial utensils to traditional outfits, ensuring that no family has to compromise on tradition due to accessibility or budget constraints.
+                </p>
+                <p class="story-text">
+                    Today, we take pride in being Nepal's trusted partner for traditional ceremonies, combining authentic cultural elements with modern convenience to create unforgettable experiences for families.
+                </p>
+            </div>
+        </section>
+
+        <!-- Values Section -->
+        <section class="values-section">
+            <h2 class="values-title">Our Values</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <h3 class="value-title">Cultural Authenticity</h3>
+                    <p class="value-text">We ensure every item in our collection respects traditional practices and maintains the sacred nature of the Pasni ceremony.</p>
+                </div>
+                <div class="value-card">
+                    <h3 class="value-title">Quality Excellence</h3>
+                    <p class="value-text">From silver utensils to ceremonial cloths, we maintain the highest standards of quality in all our rental items.</p>
+                </div>
+                <div class="value-card">
+                    <h3 class="value-title">Family-Centered Service</h3>
+                    <p class="value-text">We understand that every family is unique, and we work closely with you to customize the ceremony to your preferences.</p>
+                </div>
+                <div class="value-card">
+                    <h3 class="value-title">Affordable Tradition</h3>
+                    <p class="value-text">We believe that cultural traditions should be accessible to all families, regardless of their budget constraints.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="story-section">
+            <div class="story-content">
+                <h2 class="story-title">Ready to Create Your Perfect Pasni Ceremony?</h2>
+                <p class="story-text">
+                    Let us help you celebrate this important milestone in your child's life with a ceremony that honors tradition while creating lasting memories. Our experienced team is here to guide you through every step of the process.
+                </p>
+                <button class="button">GET STARTED TODAY</button>
+            </div>
+            <div class="story-image">
+                <img src="assets/hero-img.png" alt="Get Started" />
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-section">
+            <h3>PASNI NEPAL</h3>
+            <p>Creating unforgettable moments</p>
+            <p>through traditional excellence</p>
+        </div>
+        <div class="footer-section">
+            <h3>QUICK LINKS</h3>
+            <p>About Us</p>
+            <p>Services</p>
+            <p>Portfolio</p>
+            <p>Contact</p>
+        </div>
+        
+        <div class="footer-section">
+            <h3>CONTACT INFO</h3>
+            <p>+977-1-XXXXXXX</p>
+            <p>info@pasni.com.np</p>
+            <p>Kathmandu, Nepal</p>
+        </div>
+    </footer>
+
+    <script src="cart.js"></script>
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Pasni Rental</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap" rel="stylesheet">
+    <style>
+        .contact-page {
+            padding: 100px 80px;
+            background-color: var(--bg-light--);
+            font-family: "Outfit", sans-serif;
+        }
+
+        .contact-hero {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .contact-title {
+            font-family: "Merriweather", serif;
+            font-size: var(--main-heading-size--);
+            color: var(--main-heading-color--);
+            margin-bottom: 20px;
+        }
+
+        .contact-subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .contact-container {
+            display: flex;
+            gap: 60px;
+            align-items: flex-start;
+            margin-bottom: 80px;
+        }
+
+        .contact-form-section {
+            flex: 1;
+            background-color: #FDF0C8;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .form-title {
+            font-family: "Merriweather", serif;
+            font-size: 28px;
+            color: var(--main-heading-color--);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--main-heading-color--);
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: "Outfit", sans-serif;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--bg-dark--);
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: var(--bg-dark--);
+            color: var(--nav-color--);
+            border: none;
+            padding: 15px 20px;
+            border-radius: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            font-family: "Outfit", sans-serif;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .contact-info-section {
+            flex: 1;
+        }
+
+        .info-card {
+            background-color: #FDF0C8;
+            padding: 30px;
+            border-radius: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .info-title {
+            font-family: "Merriweather", serif;
+            font-size: 20px;
+            color: var(--main-heading-color--);
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-icon {
+            width: 20px;
+            height: 20px;
+            background-color: var(--bg-dark--);
+            border-radius: 50%;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .hours-section {
+            background-color: #FDF0C8;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .hours-title {
+            font-family: "Merriweather", serif;
+            font-size: 28px;
+            color: var(--main-heading-color--);
+            margin-bottom: 30px;
+        }
+
+        .hours-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .hours-card {
+            background-color: var(--bg-light--);
+            padding: 25px;
+            border-radius: 20px;
+        }
+
+        .hours-card h4 {
+            font-family: "Merriweather", serif;
+            font-size: 16px;
+            color: var(--main-heading-color--);
+            margin-bottom: 10px;
+        }
+
+        .hours-card p {
+            font-size: 14px;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            .contact-container {
+                flex-direction: column;
+            }
+
+            .hours-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-page {
+                padding: 80px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">PASNI RENTAL</div>
+        <nav class="header-nav">
+            <a href="index.html">home</a>
+            <a href="about.html">about us</a>
+            <a href="products.html">products</a>
+            <a href="contact.html">contact</a>
+        </nav>
+    </header>
+
+    <!-- Contact Page -->
+    <main class="contact-page">
+        <!-- Hero Section -->
+        <section class="contact-hero">
+            <h1 class="contact-title">Get In Touch</h1>
+            <p class="contact-subtitle">Ready to plan your perfect Pasni ceremony? We're here to help!</p>
+        </section>
+
+        <!-- Contact Form and Info -->
+        <section class="contact-container">
+            <!-- Contact Form -->
+            <div class="contact-form-section">
+                <h2 class="form-title">Send Us a Message</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="event-date">Preferred Event Date</label>
+                        <input type="date" id="event-date" name="event-date">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="service">Service Needed</label>
+                        <select id="service" name="service">
+                            <option value="">Select a service</option>
+                            <option value="traditional-pasni">Traditional Pasni Set</option>
+                            <option value="premium-pasni">Premium Pasni Package</option>
+                            <option value="custom-package">Custom Package</option>
+                            <option value="consultation">Consultation Only</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="guests">Expected Number of Guests</label>
+                        <input type="number" id="guests" name="guests" min="1" placeholder="e.g., 50">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Additional Details</label>
+                        <textarea id="message" name="message" placeholder="Tell us about your specific needs, preferences, or any questions you have..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="contact-info-section">
+                <div class="info-card">
+                    <h3 class="info-title">Contact Information</h3>
+                    <div class="info-item">
+                        <div class="info-icon"></div>
+                        <span>+977-1-XXXXXXX</span>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"></div>
+                        <span>+977-98XXXXXXXX</span>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"></div>
+                        <span>info@pasni.com.np</span>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"></div>
+                        <span>support@pasni.com.np</span>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="info-title">Visit Our Store</h3>
+                    <div class="info-item">
+                        <div class="info-icon"></div>
+                        <span>Pasni Rental Store</span>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"></div>
+                        <span>Kathmandu, Nepal 44600</span>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"></div>
+                        <span>Near Traditional Market</span>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"></div>
+                        <span>Easy parking available</span>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="info-title">Quick Response</h3>
+                    <div class="info-item">
+                        <div class="info-icon"></div>
+                        <span>Same-day consultation booking</span>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"></div>
+                        <span>24-hour email response</span>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"></div>
+                        <span>Emergency support available</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Business Hours -->
+        <section class="hours-section">
+            <h2 class="hours-title">Business Hours</h2>
+            <div class="hours-grid">
+                <div class="hours-card">
+                    <h4>Store Hours</h4>
+                    <p>Monday - Friday: 9:00 AM - 7:00 PM</p>
+                    <p>Saturday: 9:00 AM - 6:00 PM</p>
+                    <p>Sunday: 10:00 AM - 5:00 PM</p>
+                </div>
+                <div class="hours-card">
+                    <h4>Consultation Hours</h4>
+                    <p>Monday - Saturday: 10:00 AM - 6:00 PM</p>
+                    <p>Sunday: By appointment only</p>
+                    <p>Evening consultations available</p>
+                </div>
+                <div class="hours-card">
+                    <h4>Emergency Support</h4>
+                    <p>24/7 for booked events</p>
+                    <p>Same-day delivery available</p>
+                    <p>Last-minute arrangements accepted</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-section">
+            <h3>PASNI NEPAL</h3>
+            <p>Creating unforgettable moments</p>
+            <p>through traditional excellence</p>
+        </div>
+        <div class="footer-section">
+            <h3>QUICK LINKS</h3>
+            <p>About Us</p>
+            <p>Services</p>
+            <p>Portfolio</p>
+            <p>Contact</p>
+        </div>
+        
+        <div class="footer-section">
+            <h3>CONTACT INFO</h3>
+            <p>+977-1-XXXXXXX</p>
+            <p>info@pasni.com.np</p>
+            <p>Kathmandu, Nepal</p>
+        </div>
+    </footer>
+
+    <script src="cart.js"></script>
+</body>
+</html>

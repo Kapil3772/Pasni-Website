@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register - Pasni Rental</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap" rel="stylesheet">
+    <style>
+        .auth-page {
+            padding: 100px 80px;
+            background-color: var(--bg-light--);
+            font-family: "Outfit", sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-container {
+            background-color: #FDF0C8;
+            padding: 60px;
+            border-radius: 30px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .auth-toggle {
+            display: flex;
+            margin-bottom: 40px;
+            background-color: var(--bg-light--);
+            border-radius: 25px;
+            padding: 5px;
+        }
+
+        .auth-toggle button {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            background-color: transparent;
+            border-radius: 20px;
+            font-family: "Outfit", sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .auth-toggle button.active {
+            background-color: var(--bg-dark--);
+            color: var(--nav-color--);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-title {
+            font-family: "Merriweather", serif;
+            font-size: 32px;
+            color: var(--main-heading-color--);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--main-heading-color--);
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 14px;
+            font-family: "Outfit", sans-serif;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--bg-dark--);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: var(--bg-dark--);
+            color: var(--nav-color--);
+            border: none;
+            padding: 15px 20px;
+            border-radius: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            font-family: "Outfit", sans-serif;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .auth-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .auth-link a {
+            color: var(--bg-dark--);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .success-message {
+            background-color: #e8f5e8;
+            color: #2e7d32;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .auth-page {
+                padding: 40px 20px;
+            }
+
+            .auth-container {
+                padding: 40px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">PASNI RENTAL</div>
+        <nav class="header-nav">
+            <a href="index.html">home</a>
+            <a href="about.html">about us</a>
+            <a href="products.html">products</a>
+            <a href="contact.html">contact</a>
+        </nav>
+    </header>
+
+    <!-- Auth Page -->
+    <main class="auth-page">
+        <div class="auth-container">
+            <div class="auth-toggle">
+                <button id="loginTab" class="active" onclick="switchTab('login')">Login</button>
+                <button id="registerTab" onclick="switchTab('register')">Register</button>
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+
+            <!-- Login Form -->
+            <form class="auth-form active" id="loginForm">
+                <h2 class="form-title">Welcome Back</h2>
+                
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                
+                <button type="submit" class="submit-btn">Login</button>
+                
+                <div class="auth-link">
+                    Don't have an account? <a href="#" onclick="switchTab('register')">Register here</a>
+                </div>
+            </form>
+
+            <!-- Register Form -->
+            <form class="auth-form" id="registerForm">
+                <h2 class="form-title">Create Account</h2>
+                
+                <div class="form-group">
+                    <label for="registerName">Full Name</label>
+                    <input type="text" id="registerName" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerEmail">Email Address</label>
+                    <input type="email" id="registerEmail" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerPhone">Phone Number</label>
+                    <input type="tel" id="registerPhone" name="phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" name="password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                
+                <button type="submit" class="submit-btn">Create Account</button>
+                
+                <div class="auth-link">
+                    Already have an account? <a href="#" onclick="switchTab('login')">Login here</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-section">
+            <h3>PASNI NEPAL</h3>
+            <p>Creating unforgettable moments</p>
+            <p>through traditional excellence</p>
+        </div>
+        <div class="footer-section">
+            <h3>QUICK LINKS</h3>
+            <p>About Us</p>
+            <p>Services</p>
+            <p>Portfolio</p>
+            <p>Contact</p>
+        </div>
+        
+        <div class="footer-section">
+            <h3>CONTACT INFO</h3>
+            <p>+977-1-XXXXXXX</p>
+            <p>info@pasni.com.np</p>
+            <p>Kathmandu, Nepal</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+</body>
+</html>
