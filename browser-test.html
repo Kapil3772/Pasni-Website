@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Compatibility Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .pass { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .fail { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        button { padding: 15px 30px; font-size: 16px; margin: 10px; cursor: pointer; }
+        .admin-btn { background: #007bff; color: white; border: none; border-radius: 5px; }
+        .admin-btn:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Browser Compatibility & Function Test</h1>
+    
+    <div id="results"></div>
+    
+    <h2>Direct Function Tests</h2>
+    <button class="admin-btn" onclick="testDirectEdit()">Test Direct Edit Function</button>
+    <button class="admin-btn" onclick="testDirectAdd()">Test Direct Add Function</button>
+    <button class="admin-btn" onclick="clearStorage()">Clear All Storage</button>
+    <button class="admin-btn" onclick="populateTestData()">Add Test Data</button>
+    
+    <h2>Storage Contents</h2>
+    <div id="storage-contents"></div>
+    
+    <h2>Console Output</h2>
+    <textarea id="console-output" style="width: 100%; height: 200px; font-family: monospace;"></textarea>
+
+    <script>
+        const results = document.getElementById('results');
+        const consoleOutput = document.getElementById('console-output');
+        const storageContents = document.getElementById('storage-contents');
+        
+        // Capture console output
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        function logToTextarea(type, ...args) {
+            const timestamp = new Date().toLocaleTimeString();
+            consoleOutput.value += `[${timestamp}] ${type}: ${args.join(' ')}\n`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            logToTextarea('LOG', ...args);
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            logToTextarea('ERROR', ...args);
+        };
+        
+        function addResult(test, passed, message) {
+            const div = document.createElement('div');
+            div.className = `test-result ${passed ? 'pass' : 'fail'}`;
+            div.innerHTML = `<strong>${test}:</strong> ${passed ? '✅ PASS' : '❌ FAIL'} - ${message}`;
+            results.appendChild(div);
+        }
+        
+        function runCompatibilityTests() {
+            console.log('Starting compatibility tests...');
+            
+            // Test 1: ES6 Support
+            try {
+                const testClass = class TestClass {};
+                const testArrow = () => 'test';
+                const testTemplate = `template ${testArrow()}`;
+                addResult('ES6 Support', true, 'Classes, arrow functions, and template literals work');
+            } catch (e) {
+                addResult('ES6 Support', false, e.message);
+            }
+            
+            // Test 2: LocalStorage
+            try {
+                localStorage.setItem('test', 'value');
+                const value = localStorage.getItem('test');
+                localStorage.removeItem('test');
+                addResult('LocalStorage', value === 'value', 'LocalStorage read/write operations');
+            } catch (e) {
+                addResult('LocalStorage', false, e.message);
+            }
+            
+            // Test 3: DOM Manipulation
+            try {
+                const testDiv = document.createElement('div');
+                testDiv.innerHTML = '<span>test</span>';
+                const hasSpan = testDiv.querySelector('span') !== null;
+                addResult('DOM Manipulation', hasSpan, 'createElement and querySelector work');
+            } catch (e) {
+                addResult('DOM Manipulation', false, e.message);
+            }
+            
+            // Test 4: JSON Operations
+            try {
+                const obj = { test: 'value', number: 123 };
+                const json = JSON.stringify(obj);
+                const parsed = JSON.parse(json);
+                addResult('JSON Support', parsed.test === 'value', 'JSON stringify/parse operations');
+            } catch (e) {
+                addResult('JSON Support', false, e.message);
+            }
+            
+            // Test 5: Event Handling
+            try {
+                const button = document.createElement('button');
+                let eventFired = false;
+                button.addEventListener('click', () => { eventFired = true; });
+                button.click();
+                addResult('Event Handling', eventFired, 'addEventListener and click events');
+            } catch (e) {
+                addResult('Event Handling', false, e.message);
+            }
+            
+            updateStorageDisplay();
+        }
+        
+        function updateStorageDisplay() {
+            let content = '<h3>LocalStorage Contents:</h3><pre>';
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const value = localStorage.getItem(key);
+                content += `${key}: ${value.length > 100 ? value.substring(0, 100) + '...' : value}\n`;
+            }
+            content += '</pre>';
+            storageContents.innerHTML = content;
+        }
+        
+        function testDirectEdit() {
+            console.log('Testing direct edit function...');
+            try {
+                // Try to simulate what happens when edit button is clicked
+                const productId = 1;
+                console.log('Simulating edit click for product ID:', productId);
+                
+                // Check if localStorage has products
+                const products = JSON.parse(localStorage.getItem('adminProducts') || '[]');
+                console.log('Current products in storage:', products.length);
+                
+                if (products.length === 0) {
+                    console.log('No products found, adding test product first...');
+                    populateTestData();
+                }
+                
+                // Try to find and edit product
+                const product = products.find(p => p.id == productId);
+                if (product) {
+                    console.log('Found product to edit:', product.name);
+                    alert(`Edit function would open form for: ${product.name}`);
+                } else {
+                    console.log('Product not found, available IDs:', products.map(p => p.id));
+                    alert('Product not found. Check console for details.');
+                }
+                
+            } catch (error) {
+                console.error('Error in direct edit test:', error);
+                alert(`Error: ${error.message}`);
+            }
+            updateStorageDisplay();
+        }
+        
+        function testDirectAdd() {
+            console.log('Testing direct add function...');
+            try {
+                const newProduct = {
+                    id: Date.now(),
+                    name: 'Test Product ' + Date.now(),
+                    price: 99.99,
+                    category: 'decoration',
+                    image: 'test.jpg',
+                    description: 'Test product added directly'
+                };
+                
+                const products = JSON.parse(localStorage.getItem('adminProducts') || '[]');
+                products.push(newProduct);
+                localStorage.setItem('adminProducts', JSON.stringify(products));
+                
+                console.log('Added new product:', newProduct.name);
+                alert(`Successfully added: ${newProduct.name}`);
+                
+            } catch (error) {
+                console.error('Error in direct add test:', error);
+                alert(`Error: ${error.message}`);
+            }
+            updateStorageDisplay();
+        }
+        
+        function clearStorage() {
+            console.log('Clearing all localStorage...');
+            localStorage.clear();
+            alert('All localStorage cleared');
+            updateStorageDisplay();
+        }
+        
+        function populateTestData() {
+            console.log('Populating test data...');
+            const testProducts = [
+                {
+                    id: 1,
+                    name: 'Test Decoration Set',
+                    price: 299.99,
+                    category: 'decoration',
+                    image: 'assets/one.png',
+                    description: 'Beautiful decoration set for ceremonies'
+                },
+                {
+                    id: 2,
+                    name: 'Traditional Garland',
+                    price: 149.99,
+                    category: 'decoration',
+                    image: 'assets/two.png',
+                    description: 'Handmade traditional garland'
+                },
+                {
+                    id: 3,
+                    name: 'Ceremonial Flowers',
+                    price: 199.99,
+                    category: 'flowers',
+                    image: 'assets/three.png',
+                    description: 'Fresh ceremonial flowers'
+                }
+            ];
+            
+            localStorage.setItem('adminProducts', JSON.stringify(testProducts));
+            console.log('Test data populated:', testProducts.length, 'products');
+            alert(`Added ${testProducts.length} test products`);
+            updateStorageDisplay();
+        }
+        
+        // Run tests on load
+        window.addEventListener('load', () => {
+            console.log('Browser compatibility test page loaded');
+            runCompatibilityTests();
+        });
+        
+        // Update storage display every 2 seconds
+        setInterval(updateStorageDisplay, 2000);
+    </script>
+</body>
+</html>

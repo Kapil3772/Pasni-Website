@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Diagnostic Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 2px solid #ddd; }
+        .success { border-color: green; background: #f0fff0; }
+        .error { border-color: red; background: #fff0f0; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        pre { background: #f5f5f5; padding: 10px; overflow: auto; }
+    </style>
+</head>
+<body>
+    <h1>Admin Dashboard Diagnostic</h1>
+    
+    <div id="test1" class="test-section">
+        <h3>Test 1: LocalStorage Access</h3>
+        <button onclick="testLocalStorage()">Test LocalStorage</button>
+        <pre id="localStorage-result">Click button to test...</pre>
+    </div>
+    
+    <div id="test2" class="test-section">
+        <h3>Test 2: AdminManager Loading</h3>
+        <button onclick="testAdminManager()">Test AdminManager</button>
+        <pre id="adminManager-result">Click button to test...</pre>
+    </div>
+    
+    <div id="test3" class="test-section">
+        <h3>Test 3: Product Operations</h3>
+        <button onclick="testProductOperations()">Test Add Product</button>
+        <button onclick="testEditProduct()">Test Edit Product</button>
+        <button onclick="testDeleteProduct()">Test Delete Product</button>
+        <pre id="product-result">Click buttons to test...</pre>
+    </div>
+    
+    <div id="test4" class="test-section">
+        <h3>Test 4: Browser Information</h3>
+        <button onclick="showBrowserInfo()">Show Browser Info</button>
+        <pre id="browser-result">Click button to show info...</pre>
+    </div>
+    
+    <div id="console-log" class="test-section">
+        <h3>Console Log</h3>
+        <pre id="console-output"></pre>
+    </div>
+
+    <script src="admin-dashboard.js"></script>
+    <script>
+        // Capture console logs
+        const originalLog = console.log;
+        const originalError = console.error;
+        const consoleOutput = document.getElementById('console-output');
+        
+        function appendToConsole(type, message) {
+            const timestamp = new Date().toLocaleTimeString();
+            consoleOutput.textContent += `[${timestamp}] ${type}: ${message}\n`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            appendToConsole('LOG', args.join(' '));
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            appendToConsole('ERROR', args.join(' '));
+        };
+        
+        // Test functions
+        function testLocalStorage() {
+            const result = document.getElementById('localStorage-result');
+            try {
+                // Test basic localStorage operations
+                localStorage.setItem('test-key', 'test-value');
+                const retrieved = localStorage.getItem('test-key');
+                localStorage.removeItem('test-key');
+                
+                if (retrieved === 'test-value') {
+                    result.textContent = '✅ SUCCESS: LocalStorage is working correctly';
+                    document.getElementById('test1').className = 'test-section success';
+                } else {
+                    result.textContent = '❌ ERROR: LocalStorage test failed';
+                    document.getElementById('test1').className = 'test-section error';
+                }
+            } catch (error) {
+                result.textContent = `❌ ERROR: ${error.message}`;
+                document.getElementById('test1').className = 'test-section error';
+            }
+        }
+        
+        function testAdminManager() {
+            const result = document.getElementById('adminManager-result');
+            try {
+                if (typeof AdminManager !== 'undefined') {
+                    if (window.adminManager && window.adminManager.initialized) {
+                        result.textContent = '✅ SUCCESS: AdminManager is loaded and initialized';
+                        document.getElementById('test2').className = 'test-section success';
+                    } else {
+                        result.textContent = '⚠️ WARNING: AdminManager exists but not initialized';
+                        document.getElementById('test2').className = 'test-section error';
+                    }
+                } else {
+                    result.textContent = '❌ ERROR: AdminManager class not found';
+                    document.getElementById('test2').className = 'test-section error';
+                }
+            } catch (error) {
+                result.textContent = `❌ ERROR: ${error.message}`;
+                document.getElementById('test2').className = 'test-section error';
+            }
+        }
+        
+        function testProductOperations() {
+            const result = document.getElementById('product-result');
+            try {
+                // Test adding a product
+                const testProduct = {
+                    name: 'Test Product',
+                    price: 99.99,
+                    category: 'decoration',
+                    image: 'test.jpg',
+                    description: 'Test description'
+                };
+                
+                if (window.adminManager && typeof window.adminManager.addProduct === 'function') {
+                    window.adminManager.addProduct(testProduct);
+                    result.textContent = '✅ SUCCESS: Add product function executed';
+                    document.getElementById('test3').className = 'test-section success';
+                } else {
+                    result.textContent = '❌ ERROR: addProduct function not available';
+                    document.getElementById('test3').className = 'test-section error';
+                }
+            } catch (error) {
+                result.textContent = `❌ ERROR: ${error.message}`;
+                document.getElementById('test3').className = 'test-section error';
+            }
+        }
+        
+        function testEditProduct() {
+            const result = document.getElementById('product-result');
+            try {
+                if (window.editProduct && typeof window.editProduct === 'function') {
+                    window.editProduct(1); // Test with ID 1
+                    result.textContent += '\n✅ SUCCESS: Edit product function executed';
+                } else {
+                    result.textContent += '\n❌ ERROR: editProduct function not available';
+                }
+            } catch (error) {
+                result.textContent += `\n❌ ERROR: ${error.message}`;
+            }
+        }
+        
+        function testDeleteProduct() {
+            const result = document.getElementById('product-result');
+            try {
+                if (window.deleteProduct && typeof window.deleteProduct === 'function') {
+                    window.deleteProduct(1); // Test with ID 1
+                    result.textContent += '\n✅ SUCCESS: Delete product function executed';
+                } else {
+                    result.textContent += '\n❌ ERROR: deleteProduct function not available';
+                }
+            } catch (error) {
+                result.textContent += `\n❌ ERROR: ${error.message}`;
+            }
+        }
+        
+        function showBrowserInfo() {
+            const result = document.getElementById('browser-result');
+            const info = {
+                'User Agent': navigator.userAgent,
+                'Browser': navigator.appName,
+                'Version': navigator.appVersion,
+                'Platform': navigator.platform,
+                'Languages': navigator.languages ? navigator.languages.join(', ') : 'Not available',
+                'Local Storage Available': 'localStorage' in window && window.localStorage !== null,
+                'Session Storage Available': 'sessionStorage' in window && window.sessionStorage !== null,
+                'Document Ready State': document.readyState,
+                'Window Location': window.location.href,
+                'Screen Resolution': `${screen.width}x${screen.height}`,
+                'Viewport Size': `${window.innerWidth}x${window.innerHeight}`
+            };
+            
+            let output = '';
+            for (const [key, value] of Object.entries(info)) {
+                output += `${key}: ${value}\n`;
+            }
+            
+            result.textContent = output;
+            document.getElementById('test4').className = 'test-section success';
+        }
+        
+        // Initialize on load
+        window.addEventListener('load', function() {
+            console.log('Diagnostic page loaded');
+            setTimeout(() => {
+                console.log('Running automatic tests...');
+                testLocalStorage();
+                testAdminManager();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

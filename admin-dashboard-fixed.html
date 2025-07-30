@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard Fix</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .debug-toggle {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1001;
+        }
+        .force-reload-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <button class="debug-toggle" onclick="toggleDebug()">Toggle Debug</button>
+    
+    <div id="debug-info" class="debug-info" style="display: none;">
+        <div id="debug-content">Loading debug info...</div>
+    </div>
+    
+    <div class="force-reload-notice">
+        <strong>🔧 Compatibility Fix Mode</strong><br>
+        If edit/add buttons aren't working, try these steps:<br>
+        1. Press Ctrl+F5 to hard refresh<br>
+        2. Clear browser cache<br>
+        3. Try incognito/private mode<br>
+        4. Check console for errors (F12)
+    </div>
+    
+    <!-- Admin Header -->
+    <div class="admin-header">
+        <h1>Admin Dashboard</h1>
+        <div class="admin-info">
+            <span>Welcome, <span id="adminName">Loading...</span></span>
+            <button onclick="logout()" class="logout-btn">Logout</button>
+        </div>
+        <!-- Debug buttons -->
+        <div style="margin: 10px 0;">
+            <button onclick="testEditFunction()" style="background: #28a745; color: white; border: none; padding: 8px 16px; margin: 2px; border-radius: 4px;">Test Edit Function</button>
+            <button onclick="forceReloadProducts()" style="background: #ffc107; color: black; border: none; padding: 8px 16px; margin: 2px; border-radius: 4px;">Force Reload Products</button>
+            <button onclick="clearCacheAndReload()" style="background: #dc3545; color: white; border: none; padding: 8px 16px; margin: 2px; border-radius: 4px;">Clear Cache & Reload</button>
+        </div>
+    </div>
+
+    <!-- Admin Tabs -->
+    <div class="admin-tabs">
+        <button class="admin-tab-btn active" data-tab="products">Products</button>
+        <button class="admin-tab-btn" data-tab="orders">Orders</button>
+        <button class="admin-tab-btn" data-tab="admins">Admins</button>
+    </div>
+
+    <!-- Products Tab -->
+    <div id="products-tab" class="admin-tab-content active">
+        <div class="admin-controls">
+            <button onclick="showAddProductForm()" class="add-btn">Add New Product</button>
+            <select id="categoryFilter" onchange="filterProducts()">
+                <option value="all">All Categories</option>
+                <option value="decoration">Decoration</option>
+                <option value="catering">Catering</option>
+                <option value="photography">Photography</option>
+                <option value="flowers">Flowers</option>
+            </select>
+        </div>
+
+        <div id="addProductForm" class="product-form" style="display: none;">
+            <h3>Add New Product</h3>
+            <form id="productForm">
+                <input type="hidden" id="productId">
+                <div class="form-group">
+                    <label for="productName">Product Name:</label>
+                    <input type="text" id="productName" required>
+                </div>
+                <div class="form-group">
+                    <label for="productPrice">Price:</label>
+                    <input type="number" id="productPrice" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="productCategory">Category:</label>
+                    <select id="productCategory" required>
+                        <option value="decoration">Decoration</option>
+                        <option value="catering">Catering</option>
+                        <option value="photography">Photography</option>
+                        <option value="flowers">Flowers</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="productImage">Image URL:</label>
+                    <input type="text" id="productImage" required>
+                </div>
+                <div class="form-group">
+                    <label for="productDescription">Description:</label>
+                    <textarea id="productDescription" required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit">Save Product</button>
+                    <button type="button" onclick="cancelProductForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="productsGrid" class="products-grid">
+            <!-- Products will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Orders Tab -->
+    <div id="orders-tab" class="admin-tab-content">
+        <div id="ordersGrid" class="orders-grid">
+            <!-- Orders will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Admins Tab -->
+    <div id="admins-tab" class="admin-tab-content">
+        <div class="admin-controls">
+            <button onclick="showAddAdminForm()" class="add-btn">Add New Admin</button>
+        </div>
+        
+        <div id="addAdminForm" class="admin-form" style="display: none;">
+            <h3>Add New Admin</h3>
+            <form id="adminForm">
+                <div class="form-group">
+                    <label for="adminEmail">Email:</label>
+                    <input type="email" id="adminEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Password:</label>
+                    <input type="password" id="adminPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="adminRole">Role:</label>
+                    <select id="adminRole" required>
+                        <option value="admin">Admin</option>
+                        <option value="manager">Manager</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit">Add Admin</button>
+                    <button type="button" onclick="cancelAdminForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="adminsGrid" class="admins-grid">
+            <!-- Admins will be loaded here -->
+        </div>
+    </div>
+
+    <script src="admin-dashboard.js"></script>
+    <script>
+        // Force compatibility fixes
+        let debugVisible = false;
+        let debugInterval;
+        
+        function toggleDebug() {
+            debugVisible = !debugVisible;
+            const debugInfo = document.getElementById('debug-info');
+            debugInfo.style.display = debugVisible ? 'block' : 'none';
+            
+            if (debugVisible) {
+                updateDebugInfo();
+                debugInterval = setInterval(updateDebugInfo, 1000);
+            } else {
+                clearInterval(debugInterval);
+            }
+        }
+        
+        function updateDebugInfo() {
+            const debugContent = document.getElementById('debug-content');
+            const adminManagerExists = typeof window.adminManager !== 'undefined' && window.adminManager !== null;
+            const productsCount = localStorage.getItem('adminProducts') ? JSON.parse(localStorage.getItem('adminProducts')).length : 0;
+            
+            debugContent.innerHTML = `
+                <strong>Debug Info:</strong><br>
+                Browser: ${navigator.userAgent.split(' ').pop()}<br>
+                AdminManager: ${adminManagerExists ? '✅ Loaded' : '❌ Missing'}<br>
+                Products in Storage: ${productsCount}<br>
+                Document Ready: ${document.readyState}<br>
+                Current Time: ${new Date().toLocaleTimeString()}<br>
+                Storage Available: ${typeof Storage !== 'undefined' ? '✅' : '❌'}<br>
+                Console Errors: Check F12
+            `;
+        }
+        
+        function testEditFunction() {
+            console.log('=== TESTING EDIT FUNCTION ===');
+            try {
+                // First, ensure we have test data
+                const products = JSON.parse(localStorage.getItem('adminProducts') || '[]');
+                if (products.length === 0) {
+                    console.log('No products found, creating test data...');
+                    const testProduct = {
+                        id: 1,
+                        name: 'Test Product',
+                        price: 99.99,
+                        category: 'decoration',
+                        image: 'assets/one.png',
+                        description: 'Test product for debugging'
+                    };
+                    localStorage.setItem('adminProducts', JSON.stringify([testProduct]));
+                    console.log('Test product created');
+                }
+                
+                // Test if global edit function exists
+                if (typeof window.editProduct === 'function') {
+                    console.log('Global editProduct function found, calling...');
+                    window.editProduct(1);
+                } else {
+                    console.error('Global editProduct function not found!');
+                    alert('❌ Edit function not found. Check console for details.');
+                }
+                
+            } catch (error) {
+                console.error('Error in test edit function:', error);
+                alert(`❌ Error: ${error.message}`);
+            }
+        }
+        
+        function forceReloadProducts() {
+            console.log('=== FORCE RELOADING PRODUCTS ===');
+            try {
+                if (window.adminManager && typeof window.adminManager.loadProducts === 'function') {
+                    window.adminManager.loadProducts();
+                    console.log('Products reloaded via adminManager');
+                } else {
+                    console.error('AdminManager or loadProducts method not available');
+                }
+            } catch (error) {
+                console.error('Error force reloading products:', error);
+            }
+        }
+        
+        function clearCacheAndReload() {
+            if (confirm('This will clear all browser cache and reload the page. Continue?')) {
+                // Clear localStorage
+                localStorage.clear();
+                sessionStorage.clear();
+                
+                // Force reload with cache bypass
+                window.location.reload(true);
+            }
+        }
+        
+        // Enhanced error handling
+        window.addEventListener('error', function(e) {
+            console.error('JavaScript Error:', e.error);
+            console.error('File:', e.filename, 'Line:', e.lineno);
+        });
+        
+        // Log when page is fully loaded
+        window.addEventListener('load', function() {
+            console.log('=== PAGE FULLY LOADED ===');
+            console.log('AdminManager available:', typeof window.adminManager !== 'undefined');
+            console.log('Global functions available:', {
+                editProduct: typeof window.editProduct,
+                deleteProduct: typeof window.deleteProduct,
+                showAddProductForm: typeof window.showAddProductForm
+            });
+            
+            // Auto-populate test data if none exists
+            setTimeout(() => {
+                const products = JSON.parse(localStorage.getItem('adminProducts') || '[]');
+                if (products.length === 0) {
+                    console.log('No products found, auto-populating test data...');
+                    const testProducts = [
+                        {
+                            id: 1,
+                            name: 'Traditional Decoration Set',
+                            price: 299.99,
+                            category: 'decoration',
+                            image: 'assets/one.png',
+                            description: 'Beautiful traditional decoration set'
+                        },
+                        {
+                            id: 2,
+                            name: 'Flower Arrangement',
+                            price: 199.99,
+                            category: 'flowers',
+                            image: 'assets/two.png',
+                            description: 'Fresh flower arrangement'
+                        }
+                    ];
+                    localStorage.setItem('adminProducts', JSON.stringify(testProducts));
+                    console.log('Test products auto-populated');
+                    
+                    // Reload products if adminManager is available
+                    if (window.adminManager && typeof window.adminManager.loadProducts === 'function') {
+                        setTimeout(() => window.adminManager.loadProducts(), 500);
+                    }
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
