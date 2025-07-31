@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Pasni Rental</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">ADMIN DASHBOARD</div>
+        <nav class="header-nav">
+            <span id="adminName">Admin</span>
+            <a href="#" onclick="logout(); return false;">Logout</a>
+        </nav>
+    </header>
+
+    <!-- Admin Dashboard -->
+    <main class="main-container">
+        <!-- Dashboard Navigation -->
+        <section class="admin-nav-section">
+            <div class="admin-nav-tabs">
+                <button class="admin-tab-btn active" data-tab="products">Product Management</button>
+                <button class="admin-tab-btn" data-tab="orders">Order Management</button>
+                <button class="admin-tab-btn" data-tab="admins">Admin Management</button>
+            </div>
+        </section>
+
+        <!-- Product Management Tab -->
+        <section id="products-tab" class="admin-tab-content active">
+            <div class="admin-section-header">
+                <h2>Product Management</h2>
+                <button class="button" onclick="showAddProductForm()">Add New Product</button>
+                <button class="button2" onclick="addTestProducts()" style="margin-left: 10px;">Add Test Products</button>
+                <button class="button2" onclick="clearAllProducts()" style="margin-left: 10px;">Clear All</button>
+            </div>
+
+            <!-- Add/Edit Product Form -->
+            <div id="productForm" class="admin-form-container" style="display: none;">
+                <div class="admin-form">
+                    <h3 id="productFormTitle">Add New Product</h3>
+                    <form id="productManagementForm">
+                        <input type="hidden" id="productId">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productName">Product Name</label>
+                                <input type="text" id="productName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productPrice">Price (Rs.)</label>
+                                <input type="number" id="productPrice" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="productDescription">Description</label>
+                            <textarea id="productDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="productImage">Image URL</label>
+                            <input type="url" id="productImage" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="button">Save Product</button>
+                            <button type="button" class="button2" onclick="hideProductForm()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Products List -->
+            <div class="admin-products-grid" id="adminProductsList">
+                <!-- Products will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Order Management Tab -->
+        <section id="orders-tab" class="admin-tab-content">
+            <div class="admin-section-header">
+                <h2>Order Management</h2>
+                <div class="order-filters">
+                    <button class="filter-btn active" data-status="all">All Orders</button>
+                    <button class="filter-btn" data-status="pending">Pending</button>
+                    <button class="filter-btn" data-status="approved">Approved</button>
+                    <button class="filter-btn" data-status="cancelled">Cancelled</button>
+                </div>
+            </div>
+
+            <!-- Orders List -->
+            <div class="admin-orders-list" id="adminOrdersList">
+                <!-- Orders will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Admin Management Tab -->
+        <section id="admins-tab" class="admin-tab-content">
+            <div class="admin-section-header">
+                <h2>Admin Management</h2>
+                <button class="button" onclick="showAddAdminForm()">Add New Admin</button>
+            </div>
+
+            <!-- Add Admin Form -->
+            <div id="adminForm" class="admin-form-container" style="display: none;">
+                <div class="admin-form">
+                    <h3>Add New Admin</h3>
+                    <form id="adminManagementForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="newAdminName">Admin Name</label>
+                                <input type="text" id="newAdminName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="newAdminEmail">Email</label>
+                                <input type="email" id="newAdminEmail" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newAdminPassword">Password</label>
+                            <input type="password" id="newAdminPassword" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="button">Add Admin</button>
+                            <button type="button" class="button2" onclick="hideAdminForm()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Admins List -->
+            <div class="admin-list" id="adminsList">
+                <!-- Admins will be loaded here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-section">
+            <h3>PASNI NEPAL</h3>
+            <p>Admin Dashboard</p>
+        </div>
+    </footer>
+
+    <script src="admin-auth.js"></script>
+    <script src="admin-dashboard.js"></script>
+</body>
+</html>

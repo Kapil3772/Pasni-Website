@@ -6,9 +6,17 @@ class CartManager {
     }
 
     loadProducts() {
-        // Try to load products from admin management first
-        const adminProducts = JSON.parse(localStorage.getItem('pasni_products'));
+        // Try to load products from simple admin first
+        const simpleAdminProducts = JSON.parse(localStorage.getItem('simpleAdminProducts') || '[]');
+        if (simpleAdminProducts && simpleAdminProducts.length > 0) {
+            console.log('Loading products from simple admin:', simpleAdminProducts.length);
+            return simpleAdminProducts;
+        }
+
+        // Try to load products from admin management
+        const adminProducts = JSON.parse(localStorage.getItem('pasni_products') || '[]');
         if (adminProducts && adminProducts.length > 0) {
+            console.log('Loading products from admin management:', adminProducts.length);
             return adminProducts;
         }
 

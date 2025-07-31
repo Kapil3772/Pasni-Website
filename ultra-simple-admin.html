@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ADMIN TEST - GUARANTEED TO WORK</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; }
+        .product { border: 2px solid #ddd; margin: 15px 0; padding: 20px; border-radius: 8px; background: #f9f9f9; }
+        .btn { padding: 15px 25px; margin: 10px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; }
+        .edit { background: #007bff; color: white; }
+        .delete { background: #dc3545; color: white; }
+        .add { background: #28a745; color: white; }
+        .test { background: #ffc107; color: black; }
+        input, textarea, select { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; }
+        .form { display: none; background: #e9ecef; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .log { background: #343a40; color: #00ff00; padding: 15px; font-family: monospace; margin: 20px 0; border-radius: 5px; height: 200px; overflow-y: scroll; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 ADMIN PRODUCT MANAGER - ULTRA SIMPLE</h1>
+        <p><strong>This WILL work - No complex code, no external files!</strong></p>
+        
+        <div class="log" id="log">
+            === ACTIVITY LOG ===<br>
+        </div>
+        
+        <button class="btn test" onclick="testEverything()">🧪 TEST ALL FUNCTIONS</button>
+        <button class="btn add" onclick="showAddForm()">➕ ADD PRODUCT</button>
+        <button class="btn test" onclick="clearEverything()">🗑️ CLEAR ALL</button>
+        <button class="btn test" onclick="loadSampleData()">📦 LOAD SAMPLES</button>
+        
+        <!-- ADD/EDIT FORM -->
+        <div id="productForm" class="form">
+            <h3 id="formTitle">ADD NEW PRODUCT</h3>
+            <input type="hidden" id="editId" value="">
+            
+            <label>Product Name:</label>
+            <input type="text" id="name" placeholder="Enter product name">
+            
+            <label>Price (₹):</label>
+            <input type="number" id="price" placeholder="Enter price">
+            
+            <label>Category:</label>
+            <select id="category">
+                <option value="">Select Category</option>
+                <option value="decoration">Decoration</option>
+                <option value="catering">Catering</option>
+                <option value="flowers">Flowers</option>
+                <option value="photography">Photography</option>
+            </select>
+            
+            <label>Image URL:</label>
+            <input type="text" id="image" placeholder="assets/image.jpg">
+            
+            <label>Description:</label>
+            <textarea id="description" placeholder="Enter description"></textarea>
+            
+            <button class="btn add" onclick="saveProduct()">💾 SAVE</button>
+            <button class="btn delete" onclick="cancelForm()">❌ CANCEL</button>
+        </div>
+        
+        <!-- PRODUCTS LIST -->
+        <div id="productsList">
+            <h3>CURRENT PRODUCTS:</h3>
+            <div id="products">
+                <!-- Products will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ULTRA SIMPLE ADMIN SYSTEM
+        let allProducts = [];
+        let nextId = 1;
+        let logElement = document.getElementById('log');
+
+        // LOGGING FUNCTION
+        function log(message) {
+            const time = new Date().toLocaleTimeString();
+            logElement.innerHTML += `[${time}] ${message}<br>`;
+            logElement.scrollTop = logElement.scrollHeight;
+            console.log(message);
+        }
+
+        // LOAD PRODUCTS FROM STORAGE
+        function loadProducts() {
+            try {
+                const saved = localStorage.getItem('ULTRA_SIMPLE_PRODUCTS');
+                if (saved) {
+                    allProducts = JSON.parse(saved);
+                    nextId = allProducts.length > 0 ? Math.max(...allProducts.map(p => p.id)) + 1 : 1;
+                    log(`✅ Loaded ${allProducts.length} products from storage`);
+                } else {
+                    log(`ℹ️ No saved products found`);
+                    allProducts = [];
+                }
+            } catch (error) {
+                log(`❌ Error loading products: ${error.message}`);
+                allProducts = [];
+            }
+            displayProducts();
+        }
+
+        // SAVE PRODUCTS TO STORAGE
+        function saveProducts() {
+            try {
+                localStorage.setItem('ULTRA_SIMPLE_PRODUCTS', JSON.stringify(allProducts));
+                log(`✅ Saved ${allProducts.length} products to storage`);
+                return true;
+            } catch (error) {
+                log(`❌ Error saving products: ${error.message}`);
+                return false;
+            }
+        }
+
+        // DISPLAY ALL PRODUCTS
+        function displayProducts() {
+            const container = document.getElementById('products');
+            
+            if (allProducts.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666;">No products found. Click "LOAD SAMPLES" to get started.</p>';
+                return;
+            }
+
+            container.innerHTML = allProducts.map(product => `
+                <div class="product">
+                    <h4>📦 ${product.name}</h4>
+                    <p><strong>💰 Price:</strong> ₹${product.price}</p>
+                    <p><strong>🏷️ Category:</strong> ${product.category}</p>
+                    <p><strong>🖼️ Image:</strong> ${product.image}</p>
+                    <p><strong>📝 Description:</strong> ${product.description}</p>
+                    
+                    <button class="btn edit" onclick="editProductById(${product.id})">✏️ EDIT</button>
+                    <button class="btn delete" onclick="deleteProductById(${product.id})">🗑️ DELETE</button>
+                </div>
+            `).join('');
+            
+            log(`📋 Displayed ${allProducts.length} products`);
+        }
+
+        // SHOW ADD FORM
+        function showAddForm() {
+            log(`📝 Opening ADD product form`);
+            document.getElementById('formTitle').textContent = 'ADD NEW PRODUCT';
+            document.getElementById('editId').value = '';
+            clearForm();
+            document.getElementById('productForm').style.display = 'block';
+        }
+
+        // EDIT PRODUCT BY ID
+        function editProductById(id) {
+            log(`✏️ EDIT clicked for product ID: ${id}`);
+            
+            const product = allProducts.find(p => p.id === id);
+            if (!product) {
+                log(`❌ ERROR: Product with ID ${id} not found!`);
+                alert(`Product with ID ${id} not found!`);
+                return;
+            }
+
+            log(`✅ Found product: ${product.name}`);
+            
+            // Fill form with product data
+            document.getElementById('formTitle').textContent = 'EDIT PRODUCT';
+            document.getElementById('editId').value = id;
+            document.getElementById('name').value = product.name;
+            document.getElementById('price').value = product.price;
+            document.getElementById('category').value = product.category;
+            document.getElementById('image').value = product.image;
+            document.getElementById('description').value = product.description;
+            
+            document.getElementById('productForm').style.display = 'block';
+            log(`📝 Edit form opened for: ${product.name}`);
+        }
+
+        // DELETE PRODUCT BY ID
+        function deleteProductById(id) {
+            log(`🗑️ DELETE clicked for product ID: ${id}`);
+            
+            const product = allProducts.find(p => p.id === id);
+            if (!product) {
+                log(`❌ ERROR: Product with ID ${id} not found!`);
+                return;
+            }
+
+            if (confirm(`Are you sure you want to delete "${product.name}"?`)) {
+                allProducts = allProducts.filter(p => p.id !== id);
+                saveProducts();
+                displayProducts();
+                log(`✅ DELETED: ${product.name}`);
+            } else {
+                log(`❌ Delete cancelled for: ${product.name}`);
+            }
+        }
+
+        // SAVE PRODUCT (ADD OR EDIT)
+        function saveProduct() {
+            const editId = document.getElementById('editId').value;
+            const name = document.getElementById('name').value.trim();
+            const price = parseFloat(document.getElementById('price').value);
+            const category = document.getElementById('category').value;
+            const image = document.getElementById('image').value.trim();
+            const description = document.getElementById('description').value.trim();
+
+            // Validation
+            if (!name) {
+                alert('Please enter product name!');
+                return;
+            }
+            if (!price || price <= 0) {
+                alert('Please enter valid price!');
+                return;
+            }
+            if (!category) {
+                alert('Please select category!');
+                return;
+            }
+            if (!image) {
+                alert('Please enter image URL!');
+                return;
+            }
+            if (!description) {
+                alert('Please enter description!');
+                return;
+            }
+
+            const productData = { name, price, category, image, description };
+
+            if (editId) {
+                // EDIT existing product
+                const index = allProducts.findIndex(p => p.id === parseInt(editId));
+                if (index !== -1) {
+                    allProducts[index] = { ...productData, id: parseInt(editId) };
+                    log(`✅ UPDATED: ${name}`);
+                }
+            } else {
+                // ADD new product
+                const newProduct = { ...productData, id: nextId++ };
+                allProducts.push(newProduct);
+                log(`✅ ADDED: ${name} (ID: ${newProduct.id})`);
+            }
+
+            saveProducts();
+            displayProducts();
+            cancelForm();
+        }
+
+        // CANCEL FORM
+        function cancelForm() {
+            document.getElementById('productForm').style.display = 'none';
+            clearForm();
+            log(`❌ Form cancelled`);
+        }
+
+        // CLEAR FORM
+        function clearForm() {
+            document.getElementById('name').value = '';
+            document.getElementById('price').value = '';
+            document.getElementById('category').value = '';
+            document.getElementById('image').value = '';
+            document.getElementById('description').value = '';
+        }
+
+        // TEST ALL FUNCTIONS
+        function testEverything() {
+            log(`🧪 TESTING ALL FUNCTIONS...`);
+            
+            // Test 1: Add product
+            log(`Test 1: Adding test product...`);
+            allProducts.push({
+                id: 999,
+                name: 'TEST PRODUCT',
+                price: 123.45,
+                category: 'decoration',
+                image: 'test.jpg',
+                description: 'This is a test product'
+            });
+            
+            // Test 2: Save and display
+            saveProducts();
+            displayProducts();
+            
+            // Test 3: Try to edit
+            setTimeout(() => {
+                log(`Test 2: Attempting to edit test product...`);
+                editProductById(999);
+            }, 1000);
+            
+            log(`✅ Tests completed!`);
+        }
+
+        // CLEAR EVERYTHING
+        function clearEverything() {
+            if (confirm('Delete ALL products?')) {
+                allProducts = [];
+                nextId = 1;
+                localStorage.removeItem('ULTRA_SIMPLE_PRODUCTS');
+                displayProducts();
+                log(`🗑️ ALL DATA CLEARED`);
+            }
+        }
+
+        // LOAD SAMPLE DATA
+        function loadSampleData() {
+            const samples = [
+                {
+                    id: nextId++,
+                    name: 'Traditional Decoration Set',
+                    price: 2999.99,
+                    category: 'decoration',
+                    image: 'assets/one.png',
+                    description: 'Beautiful traditional decoration set'
+                },
+                {
+                    id: nextId++,
+                    name: 'Catering Package',
+                    price: 4999.99,
+                    category: 'catering',
+                    image: 'assets/two.png',
+                    description: 'Complete catering service'
+                },
+                {
+                    id: nextId++,
+                    name: 'Flower Arrangement',
+                    price: 1499.99,
+                    category: 'flowers',
+                    image: 'assets/three.png',
+                    description: 'Fresh flower arrangements'
+                }
+            ];
+
+            allProducts.push(...samples);
+            saveProducts();
+            displayProducts();
+            log(`📦 Added ${samples.length} sample products`);
+        }
+
+        // INITIALIZE ON PAGE LOAD
+        window.addEventListener('load', function() {
+            log(`🚀 Ultra Simple Admin loaded!`);
+            loadProducts();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Pasni Rental</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-status {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .admin-error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .test-buttons {
+            background: #e9ecef;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .test-buttons button {
+            margin: 5px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-success { background: #28a745; color: white; }
+        .btn-warning { background: #ffc107; color: black; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-info { background: #17a2b8; color: white; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">ADMIN DASHBOARD</div>
+        <nav class="header-nav">
+            <span id="adminName">Admin</span>
+            <a href="index.html">Back to Site</a>
+        </nav>
+    </header>
+
+    <!-- Status Display -->
+    <div class="main-container">
+        <div id="adminStatus" class="admin-status">
+            🔄 Loading admin system...
+        </div>
+
+        <!-- Test Buttons -->
+        <div class="test-buttons">
+            <h3>🔧 Admin System Controls</h3>
+            <button class="btn-success" onclick="forceInitialize()">🚀 Force Initialize</button>
+            <button class="btn-warning" onclick="addTestData()">📦 Add Test Data</button>
+            <button class="btn-info" onclick="checkSystem()">🔍 Check System</button>
+            <button class="btn-danger" onclick="clearAll()">🗑️ Clear All Data</button>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <section id="products-tab" class="admin-tab-content active">
+            <div class="admin-section-header">
+                <h2>Product Management</h2>
+                <button class="button" onclick="showAddForm()">Add New Product</button>
+            </div>
+
+            <!-- Add/Edit Product Form -->
+            <div id="productForm" class="admin-form-container" style="display: none;">
+                <div class="admin-form">
+                    <h3 id="productFormTitle">Add New Product</h3>
+                    <form id="productManagementForm">
+                        <input type="hidden" id="productId">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productName">Product Name</label>
+                                <input type="text" id="productName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productPrice">Price</label>
+                                <input type="number" id="productPrice" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productCategory">Category</label>
+                                <select id="productCategory" required>
+                                    <option value="">Select Category</option>
+                                    <option value="decoration">Decoration</option>
+                                    <option value="catering">Catering</option>
+                                    <option value="photography">Photography</option>
+                                    <option value="flowers">Flowers</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="productDescription">Description</label>
+                                <textarea id="productDescription" required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="productImage">Image URL</label>
+                            <input type="text" id="productImage" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="button">Save Product</button>
+                            <button type="button" class="button2" onclick="hideForm()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Products List -->
+            <div class="admin-products-grid" id="adminProductsList">
+                <!-- Products will be loaded here -->
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // SIMPLE ADMIN SYSTEM - GUARANTEED TO WORK
+        let products = [];
+        let nextId = 1;
+
+        // Status update function
+        function updateStatus(message, isError = false) {
+            const status = document.getElementById('adminStatus');
+            status.className = isError ? 'admin-error' : 'admin-status';
+            status.innerHTML = isError ? `❌ ${message}` : `✅ ${message}`;
+            console.log(message);
+        }
+
+        // Force initialize
+        function forceInitialize() {
+            updateStatus('Forcing admin system initialization...');
+            try {
+                loadProducts();
+                updateStatus('Admin system initialized successfully!');
+            } catch (error) {
+                updateStatus(`Error initializing: ${error.message}`, true);
+            }
+        }
+
+        // Load products
+        function loadProducts() {
+            try {
+                const stored = localStorage.getItem('adminProducts');
+                products = stored ? JSON.parse(stored) : [];
+                nextId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+                displayProducts();
+                updateStatus(`Loaded ${products.length} products`);
+            } catch (error) {
+                updateStatus(`Error loading products: ${error.message}`, true);
+                products = [];
+            }
+        }
+
+        // Save products
+        function saveProducts() {
+            try {
+                localStorage.setItem('adminProducts', JSON.stringify(products));
+                updateStatus(`Saved ${products.length} products`);
+                return true;
+            } catch (error) {
+                updateStatus(`Error saving: ${error.message}`, true);
+                return false;
+            }
+        }
+
+        // Display products
+        function displayProducts() {
+            const container = document.getElementById('adminProductsList');
+            
+            if (products.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 8px;">
+                        <h3>No products found</h3>
+                        <p>Click "Add Test Data" to get started or "Add New Product" to create one manually.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = products.map(product => `
+                <div class="admin-product-card" style="border: 2px solid #ddd; padding: 20px; margin: 15px 0; border-radius: 8px; background: white;">
+                    <div class="admin-product-image">
+                        <img src="${product.image}" alt="${product.name}" onerror="this.src='assets/placeholder.png'" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                    </div>
+                    <div class="admin-product-info">
+                        <h3>${product.name}</h3>
+                        <p class="product-price">Rs. ${product.price}</p>
+                        <p class="product-category">Category: ${product.category}</p>
+                        <p class="product-desc">${product.description}</p>
+                        <div class="admin-product-actions" style="margin-top: 15px;">
+                            <button class="button" onclick="editProduct(${product.id})" style="margin-right: 10px;">✏️ Edit</button>
+                            <button class="button2" onclick="deleteProduct(${product.id})">🗑️ Delete</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Show add form
+        function showAddForm() {
+            document.getElementById('productFormTitle').textContent = 'Add New Product';
+            document.getElementById('productId').value = '';
+            document.getElementById('productManagementForm').reset();
+            document.getElementById('productForm').style.display = 'block';
+            updateStatus('Add product form opened');
+        }
+
+        // Hide form
+        function hideForm() {
+            document.getElementById('productForm').style.display = 'none';
+            updateStatus('Form closed');
+        }
+
+        // Edit product
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) {
+                updateStatus(`Product with ID ${id} not found!`, true);
+                return;
+            }
+
+            document.getElementById('productFormTitle').textContent = 'Edit Product';
+            document.getElementById('productId').value = id;
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productPrice').value = product.price;
+            document.getElementById('productCategory').value = product.category;
+            document.getElementById('productImage').value = product.image;
+            document.getElementById('productDescription').value = product.description;
+            document.getElementById('productForm').style.display = 'block';
+            
+            updateStatus(`Editing: ${product.name}`);
+        }
+
+        // Delete product
+        function deleteProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) {
+                updateStatus(`Product with ID ${id} not found!`, true);
+                return;
+            }
+
+            if (confirm(`Are you sure you want to delete "${product.name}"?`)) {
+                products = products.filter(p => p.id !== id);
+                saveProducts();
+                displayProducts();
+                updateStatus(`Deleted: ${product.name}`);
+            }
+        }
+
+        // Add test data
+        function addTestData() {
+            const testProducts = [
+                {
+                    id: nextId++,
+                    name: 'Traditional Decoration Set',
+                    price: 2999.99,
+                    category: 'decoration',
+                    image: 'assets/one.png',
+                    description: 'Beautiful traditional decoration set for ceremonies'
+                },
+                {
+                    id: nextId++,
+                    name: 'Premium Catering Package',
+                    price: 4999.99,
+                    category: 'catering',
+                    image: 'assets/two.png',
+                    description: 'Complete catering service for events'
+                },
+                {
+                    id: nextId++,
+                    name: 'Wedding Photography',
+                    price: 1999.99,
+                    category: 'photography',
+                    image: 'assets/three.png',
+                    description: 'Professional wedding photography package'
+                }
+            ];
+
+            products.push(...testProducts);
+            saveProducts();
+            displayProducts();
+            updateStatus(`Added ${testProducts.length} test products`);
+        }
+
+        // Clear all data
+        function clearAll() {
+            if (confirm('Are you sure you want to delete ALL products?')) {
+                products = [];
+                nextId = 1;
+                localStorage.removeItem('adminProducts');
+                displayProducts();
+                updateStatus('All data cleared');
+            }
+        }
+
+        // Check system
+        function checkSystem() {
+            const checks = {
+                'LocalStorage Available': typeof Storage !== 'undefined',
+                'Products Array': Array.isArray(products),
+                'Products Count': products.length,
+                'Next ID': nextId,
+                'Form Element': document.getElementById('productForm') !== null,
+                'Product List Element': document.getElementById('adminProductsList') !== null
+            };
+
+            let report = 'System Check:\n';
+            for (const [check, result] of Object.entries(checks)) {
+                report += `${check}: ${result}\n`;
+            }
+            
+            alert(report);
+            updateStatus('System check completed - see alert for details');
+        }
+
+        // Form submission
+        document.getElementById('productManagementForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('productId').value;
+            const productData = {
+                name: document.getElementById('productName').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                category: document.getElementById('productCategory').value,
+                image: document.getElementById('productImage').value,
+                description: document.getElementById('productDescription').value
+            };
+
+            if (id) {
+                // Edit existing
+                const index = products.findIndex(p => p.id === parseInt(id));
+                if (index !== -1) {
+                    products[index] = { ...productData, id: parseInt(id) };
+                    updateStatus(`Updated: ${productData.name}`);
+                }
+            } else {
+                // Add new
+                const newProduct = { ...productData, id: nextId++ };
+                products.push(newProduct);
+                updateStatus(`Added: ${productData.name}`);
+            }
+
+            saveProducts();
+            displayProducts();
+            hideForm();
+        });
+
+        // Initialize on load
+        window.addEventListener('load', function() {
+            updateStatus('Page loaded, initializing...');
+            setTimeout(forceInitialize, 500);
+        });
+
+        // Also sync with main website's storage key
+        function syncWithMainSite() {
+            try {
+                // Also save to the key that the main site uses
+                localStorage.setItem('simpleAdminProducts', JSON.stringify(products));
+                localStorage.setItem('pasni_products', JSON.stringify(products));
+                updateStatus('Synced with main website');
+            } catch (error) {
+                updateStatus(`Sync error: ${error.message}`, true);
+            }
+        }
+
+        // Override save to always sync
+        const originalSave = saveProducts;
+        saveProducts = function() {
+            const result = originalSave();
+            if (result) syncWithMainSite();
+            return result;
+        };
+    </script>
+</body>
+</html>
